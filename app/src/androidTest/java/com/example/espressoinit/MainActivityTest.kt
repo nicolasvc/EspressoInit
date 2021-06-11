@@ -6,10 +6,13 @@ import android.app.Instrumentation.*
 import android.content.ContentResolver
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
@@ -18,7 +21,9 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.example.espressoinit.ImageViewHasDrawableMatcher.hasDrawable
 import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
@@ -27,38 +32,44 @@ import kotlin.math.exp
 
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest{
+class MainActivityTest {
 
-    //Esto ejecuta un intent dentor de la clase MainActivity
+    /*
+    *Esto ejecuta un intent dentro de la clase MainActivity
+    * De igual forma la decorador Rule es lo que primero se va a ejecutar cuando se ejecute cualquier test
+    * */
+
     @get:Rule
     val intentTestRUle = IntentsTestRule(MainActivity::class.java)
 
+
     @Test
-    fun test_validate_intentsendtopickpackage() {
+    fun test_cameraIntent_isBitmapSetToImageView() {
+        //GIVEN
+        val activityResuld = createImageCaptureActivityResultSub()
+        val expectedIntent : Matcher<Intent> = hasAction(MediaStore.ACTION_IMAGE_CAPTURE)
+        intending(expectedIntent).respondWith(activityResuld)
 
-        //Lanzar data dentro del intent
-        //Given
-        val expectedIntent: Matcher<Intent> = allOf(
-            hasAction(Intent.ACTION_PICK),
-            hasData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        )
-        val activityResult = createGalleryPickActivityResultStub()
-        //Intending sirve para hacer test a un intent y respondWith es el encargado de pasarle el activityResult
-        intending(expectedIntent).respondWith(activityResult)
-
-        onView(withId(R.id.button_open_gallery)).perform(click())
-        //EJecuta el intent
-        intended(expectedIntent)
+        //Execute
+        //Validamos que el ImageView no Contenga ningun Drawable
+        onView(withId(R.id.image)).check(matches(not(hasDrawable())))
+        onView(withId(R.id.button_launch_camera)).perform(click())
+        intending(expectedIntent)
+        //Validamos que si exista ya un drawable en el imageView
+        onView(withId(R.id.image)).check(matches(hasDrawable()))
     }
 
-    //Funcion encargada de simular el intent y el activityResult de obtener una imagen de la galeria
-    private fun createGalleryPickActivityResultStub(): ActivityResult {
-        val resources : Resources = InstrumentationRegistry.getInstrumentation().context.resources
-        val imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(R.drawable.ic_launcher_background))
-
-        val resulttIntent = Intent()
-        resulttIntent.setData(imageUri)
-        return  ActivityResult(Activity.RESULT_OK, resulttIntent)
-
+    private fun createImageCaptureActivityResultSub(): ActivityResult {
+        val bundle = Bundle()
+        bundle.putParcelable(
+            KEY_IMAGE_DATA,
+            BitmapFactory.decodeResource(
+                intentTestRUle.activity.resources,
+                R.drawable.ic_launcher_background
+            )
+        )
+        val resultData = Intent()
+        resultData.putExtras(bundle)
+        return ActivityResult(Activity.RESULT_OK, resultData)
     }
 }

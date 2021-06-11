@@ -1,52 +1,57 @@
 package com.example.espressoinit
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-const val GALLERY_REQUEST_CODE = 1234
+const val KEY_IMAGE_DATA = "data"
 
 
 class MainActivity : AppCompatActivity() {
+
+    private val TAG: String = "AppDebug"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button_open_gallery.setOnClickListener {
-            pickFromGallery()
+        button_launch_camera.setOnClickListener {
+            dispatchCameraIntent()
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK){
-            Log.d(TAG, "RESULT_OK")
-            when(requestCode){
-                GALLERY_REQUEST_CODE -> {
-                    Log.d(TAG, "GALLERY_REQUEST_CODE detected.")
-                    data?.data?.let { uri ->
-                        Log.d(TAG, "URI: $uri")
-                        Glide.with(this)
-                            .load(uri)
-                            .into(image)
+    private fun dispatchCameraIntent() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        obtenerResultadoActividad.launch(intent)
+    }
+
+    private var obtenerResultadoActividad =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.d(TAG, "REQUEST_IMAGE_CAPTURE detected.")
+                result.data?.extras.let { extras ->
+                    if (extras == null || !extras.containsKey(KEY_IMAGE_DATA)) {
+                        showMessage()
                     }
+                    val imageBitmap = extras?.get(KEY_IMAGE_DATA) as Bitmap?
+                    image.setImageBitmap(imageBitmap)
                 }
+            } else {
+                showMessage()
             }
         }
-    }
 
-    //Obtener imagenes seleccionadas o archivos por el usuario
-    private fun pickFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+    private fun showMessage() {
+        Toast.makeText(this, "No se capturo ninguna imagen", Toast.LENGTH_SHORT).show()
     }
 
 
