@@ -22,6 +22,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.example.espressoinit.MainActivity.Companion.buildToastMessage
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matcher
@@ -32,7 +33,7 @@ import kotlin.math.exp
 
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest{
+class MainActivityTest {
 
 
     @Test
@@ -57,6 +58,10 @@ class MainActivityTest{
         onView(withText(R.string.text_enter_name)).check(doesNotExist())
 
         onView(withId(R.id.text_name)).check(matches(withText(EXPECTED_NAME)))
+
+        //Test if toast is displayed
+        onView(withText(buildToastMessage(EXPECTED_NAME))).inRoot(ToastMatcher())
+            .check(matches(isDisplayed()))
 
 
     }
