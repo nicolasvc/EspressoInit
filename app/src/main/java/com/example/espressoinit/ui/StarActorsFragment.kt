@@ -1,20 +1,21 @@
-package com.example.espressoinit
+package com.example.espressoinit.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_directors.*
+import com.example.espressoinit.R
+import kotlinx.android.synthetic.main.fragment_star_actors.*
 
-class DirectorsFragment : Fragment(){
+class StarActorsFragment : Fragment(){
 
-    private val directors: ArrayList<String> = ArrayList()
+    private val starActors: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
-            directors.addAll(args.get("args_directors") as List<String>)
+            starActors.addAll(args.get("args_actors") as List<String>)
         }
     }
 
@@ -23,33 +24,29 @@ class DirectorsFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_directors, container, false)
+        return inflater.inflate(R.layout.fragment_star_actors, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDirectors()
+        setActors()
     }
 
-    private fun setDirectors(){
-        directors_text.text = stringBuilderForDirectors(directors)
+    private fun setActors(){
+        star_actors_text.text = stringBuilderForStarActors(starActors)
     }
 
     companion object{
-        fun stringBuilderForDirectors(directors: ArrayList<String>): String{
+        fun stringBuilderForStarActors(actors: ArrayList<String>): String{
             val sb = StringBuilder()
-            for(director in directors){
-                sb.append(director + "\n")
+            for(actor in actors){
+                sb.append(actor + "\n")
             }
             return sb.toString()
         }
     }
 }
-
-
-
 
 
 

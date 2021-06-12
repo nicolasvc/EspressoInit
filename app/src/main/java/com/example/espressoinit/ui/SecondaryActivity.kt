@@ -1,7 +1,8 @@
-package com.example.espressoinit
+package com.example.espressoinit.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.espressoinit.R
 import kotlinx.android.synthetic.main.activity_secondary.*
 
 class SecondaryActivity : AppCompatActivity() {

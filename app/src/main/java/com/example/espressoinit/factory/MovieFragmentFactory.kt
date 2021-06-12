@@ -2,9 +2,12 @@ package com.example.espressoinit.factory
 
 
 import androidx.fragment.app.FragmentFactory
-import com.example.espressoinit.DirectorsFragment
-import com.example.espressoinit.MovieDetailFragment
-import com.example.espressoinit.StarActorsFragment
+import com.bumptech.glide.request.RequestOptions
+import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
+import com.example.espressoinit.ui.DirectorsFragment
+import com.example.espressoinit.ui.MovieDetailFragment
+import com.example.espressoinit.ui.MovieListFragment
+import com.example.espressoinit.ui.StarActorsFragment
 
 
 
@@ -12,14 +15,36 @@ import com.example.espressoinit.StarActorsFragment
  * //TODO investigar mas sobre este tema
  * La clase FragmentFactory nos permite obtener una fabrica de fragmentos
  * */
-class MovieFragmentFactory : FragmentFactory(){
+class MovieFragmentFactory(
+    private val requestOptions: RequestOptions? = null,
+    private val moviesDataSource: MoviesDataSource? = null
+) : FragmentFactory() {
 
     private val TAG: String = "AppDebug"
 
     override fun instantiate(classLoader: ClassLoader, className: String) =
-        when(className){
+
+        when (className) {
+
+            MovieListFragment::class.java.name -> {
+                if (moviesDataSource != null) {
+                    MovieListFragment(moviesDataSource)
+                } else {
+                    super.instantiate(classLoader, className)
+                }
+            }
+
             MovieDetailFragment::class.java.name -> {
-                MovieDetailFragment()
+                if (requestOptions != null
+                    && moviesDataSource != null
+                ) {
+                    MovieDetailFragment(
+                        requestOptions,
+                        moviesDataSource
+                    )
+                } else {
+                    super.instantiate(classLoader, className)
+                }
             }
 
             DirectorsFragment::class.java.name -> {
@@ -34,9 +59,8 @@ class MovieFragmentFactory : FragmentFactory(){
                 super.instantiate(classLoader, className)
             }
         }
-
-
 }
+
 
 
 

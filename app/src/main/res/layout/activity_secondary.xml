@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/secondary"
-    tools:context=".SecondaryActivity">
+    tools:context=".ui.SecondaryActivity">
 
     <TextView
         android:id="@+id/secondary_title"
