@@ -7,6 +7,7 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import com.example.espressoinit.R
 import com.example.espressoinit.factory.MovieFragmentFactory
+import com.example.espressoinit.ui.movie.StarActorsFragment
 import org.junit.Test
 
 class StarActorsFragmentTest {

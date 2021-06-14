@@ -4,6 +4,8 @@ import com.example.espressoinit.data.Movie
 
 object DummyMovies {
 
+    const val FAKE_NETWORK_DELAY = 1000L
+
     val movies = arrayOf(
         Movie(
             0,

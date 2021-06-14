@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.example.espressoinit.R
 import com.example.espressoinit.factory.MovieFragmentFactory
-import org.junit.Assert.*
+import com.example.espressoinit.ui.movie.DirectorsFragment
 import org.junit.Test
 
 class DirectorsFragmentTest {

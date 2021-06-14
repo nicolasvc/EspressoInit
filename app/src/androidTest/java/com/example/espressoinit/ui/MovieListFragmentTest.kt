@@ -2,6 +2,7 @@ package com.example.espressoinit.ui
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
@@ -9,18 +10,42 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.codingwithmitch.espressouitestexamples.data.DummyMovies
 import com.example.espressoinit.R
-import com.example.espressoinit.ui.MoviesListAdapter.MovieViewHolder
-import org.junit.Rule
-import org.junit.Test
+import com.example.espressoinit.ui.movie.MoviesListAdapter.MovieViewHolder
+import com.example.espressoinit.ui.movie.DirectorsFragment
+import com.example.espressoinit.ui.movie.MainActivity
+import com.example.espressoinit.ui.movie.StarActorsFragment
+import com.example.espressoinit.util.EspressoIdlingResource
+import org.junit.*
+import org.junit.runners.MethodSorters
 
+
+/**
+ * Este decorador se usar para que se pueda correr las pruebas en orden alfabetico a,b,c....
+ * */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class MovieListFragmentTest {
 
+    val LIST_ITEM_IN_TEST = 4
+    val MOVIE_IN_TEST =  DummyMovies.movies[LIST_ITEM_IN_TEST]
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    val LIST_ITEM_IN_TEST = 4
-    val MOVIE_IN_TEST =  DummyMovies.movies[LIST_ITEM_IN_TEST]
+    /**Con este decorador permite realizar tareas asincronicas al momento de consumir algo tipo de api
+    Para realizar las pruebas por lo tanto se tiene que registrar la accion que se hara y a su quitarla del registro
+    Esto funciona como un semaforo cada vez que se agrega una tarea sobre un Thread
+    */
+
+    @Before
+    fun registerIdlingResource(){
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+    }
+
+    @After
+    fun unregisterIdlingResource(){
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+    }
+
 
     /**
      * Recycler view comes to view

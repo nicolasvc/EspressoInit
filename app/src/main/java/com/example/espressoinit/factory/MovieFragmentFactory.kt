@@ -4,10 +4,10 @@ package com.example.espressoinit.factory
 import androidx.fragment.app.FragmentFactory
 import com.bumptech.glide.request.RequestOptions
 import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
-import com.example.espressoinit.ui.DirectorsFragment
-import com.example.espressoinit.ui.MovieDetailFragment
-import com.example.espressoinit.ui.MovieListFragment
-import com.example.espressoinit.ui.StarActorsFragment
+import com.example.espressoinit.ui.movie.DirectorsFragment
+import com.example.espressoinit.ui.movie.MovieDetailFragment
+import com.example.espressoinit.ui.movie.MovieListFragment
+import com.example.espressoinit.ui.movie.StarActorsFragment
 
 
 

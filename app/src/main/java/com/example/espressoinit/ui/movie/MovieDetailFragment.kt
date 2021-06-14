@@ -1,4 +1,4 @@
-package com.example.espressoinit.ui
+package com.example.espressoinit.ui.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
 import com.example.espressoinit.R
 import com.example.espressoinit.data.Movie
-import com.example.espressoinit.data.source.MoviesRemoteDataSource
 import kotlinx.android.synthetic.main.fragment_movie_detail.*
 
 class MovieDetailFragment

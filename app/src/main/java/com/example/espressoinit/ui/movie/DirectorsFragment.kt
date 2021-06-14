@@ -1,4 +1,4 @@
-package com.example.espressoinit.ui
+package com.example.espressoinit.ui.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater

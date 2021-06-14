@@ -11,9 +11,9 @@ import com.codingwithmitch.espressouitestexamples.data.source.MoviesDataSource
 import com.example.espressoinit.R
 import com.example.espressoinit.data.Movie
 import com.example.espressoinit.factory.MovieFragmentFactory
+import com.example.espressoinit.ui.movie.MovieDetailFragment
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.*
 import org.junit.Test
 
 class MovieDetailFragmentTest {
